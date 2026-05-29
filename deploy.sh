@@ -1,16 +1,9 @@
 #!/bin/bash
 echo "🚀 Déploiement..."
 
-# Arrêter anciens containers
 docker compose down
-
-# Rebuild l’image avec le nouveau code
-docker compose build
-
-# Lancer en background
+docker image prune -af
+docker compose build --no-cache
 docker compose up -d
-
-# Nettoyer les images inutilisées
-docker image prune -f
 
 echo "✅ Déploiement terminé"
