@@ -1,12 +1,16 @@
 #!/bin/bash
-
 echo "🚀 Déploiement..."
 
-# PAS de cd vers /home/admin !
-# Jenkins est déjà dans le workspace contenant tout le projet
-
+# Arrêter anciens containers
 docker compose down
-docker compose up -d --build
+
+# Rebuild l’image avec le nouveau code
+docker compose build
+
+# Lancer en background
+docker compose up -d
+
+# Nettoyer les images inutilisées
 docker image prune -f
 
 echo "✅ Déploiement terminé"
