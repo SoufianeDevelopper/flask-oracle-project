@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 echo "🚀 Déploiement..."
 
 docker compose down
