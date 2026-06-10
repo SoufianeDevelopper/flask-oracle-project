@@ -1,0 +1,23 @@
+version: '3.8'  # Version de Docker Compose utilisée. 3.8 permet des fonctionnalités modernes comme le déploiement multi-réplicas.
+
+services:
+  # Définition du service de l'application Flask
+  flask-app:
+    build: . # Construction de l'image Docker à partir du Dockerfile situé dans le répertoire courant
+    restart: always # Redémarre automatiquement le conteneur si celui-ci plante ou si le serveur redémarre
+    deploy:
+      replicas: 3 # Déploiement de 3 instances identiques de l'application (utile pour la haute disponibilité)
+    environment: # Variables d'environnement passées au conteneur
+      - DB_USER=flask_user # Nom d'utilisateur pour la base de données
+      - DB_PASSWORD=flask_password # Mot de passe pour se connecter à la base Oracle
+      - DB_DSN=192.168.119.20:1521/BASEDEV # Data Source Name : IP, port et service de la base Oracle
+
+    # Définition du service Nginx qui fera office de Load Balancer
+  nginx-lb:
+    image: nginx:latest # Utilisation de l'image officielle Nginx la plus récente
+    ports:
+      - "80:80"  # Exposition du port 80 du conteneur sur le port 80 de l'hôte (HTTP standard)
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro # Montage du fichier de configuration Nginx local (lecture seule)
+    depends_on:
+      - flask-app # S'assure que le service Flask est démarré avant Nginx
