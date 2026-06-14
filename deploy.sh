@@ -1,25 +1,23 @@
-echo "======================================"
-3🚀 DÉBUT DU DÉPLOIEMENT AUTOMATIQUE
-echo "======================================"
+#!/bin/bash
+echo "=== DÉBUT DU DÉPLOIEMENT AUTOMATIQUE ==="
 
-# 1. Aller dans le dossier du projet
-cd ~/flask_oracle_project
+# 1. Se placer dans le bon dossier
+cd /home/admin/flask_oracle_project
 
-# 2. Récupérer la dernière version du code
-git pull origin main
+# 2. Forcer la récupération du nouveau code depuis GitHub
+git fetch --all
+git reset --hard origin/main # ou master selon ta branche
 
-# 3. Supprimer l'ancienne version de l'application obsolète
+# 3. Arrêter les anciens conteneurs
 docker compose down
 
-# 4. Rebuild sans cache pour intégrer les modifs de app.py
-docker compose build --no-cache
+# 4. RECONSTRUIRE SANS CACHE (C'est ça qui met à jour app.py !)
+docker compose build --no-cache --pull
 
-# 5. Relancer le cluster en arrière-plan
-docker compose up -d
+# 5. Relancer le projet
+docker compose up -d --force-recreate
 
-# 6. Nettoyage des images intermédiaires suspendues
+# 6. Nettoyage
 docker image prune -f
 
-echo "======================================"
-echo "✅ INFRASTRUCTURE MISE À JOUR ET ÉQUILIBRÉE !"
-echo "======================================"
+echo "=== IP INFRASTRUCTURE MISE À JOUR ! ==="
