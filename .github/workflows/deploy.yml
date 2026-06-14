@@ -1,4 +1,4 @@
-name: CI/CD Production Pipeline
+name: CI/CD Test Pipeline
 
 # Déclencheur : Un push sur la branche main
 on:
