@@ -30,7 +30,7 @@ def index():
         
         return jsonify({
             "status": "Success",
-            "message": f"hello bouazza hbil Connecté avec succès à la base Oracle : {db_name}",
+            "message": f"hello hbil Connecté avec succès à la base Oracle : {db_name}",
             "host": "VM-Flask-Server"
         })
     except Exception as e:
